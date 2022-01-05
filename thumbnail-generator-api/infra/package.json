@@ -8,7 +8,12 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "bootstrap": "cdk bootstrap --profile=sinapsis-$npm_config_env -c env=$npm_config_env",
+    "deploy": "cdk deploy *-$npm_config_env --profile=sinapsis-$npm_config_env -c env=$npm_config_env",
+    "deployStack": "cdk deploy $npm_config_stack-$npm_config_env --profile=sinapsis-$npm_config_env -e -c env=$npm_config_env",
+    "destroy": "cdk destroy *-$npm_config_env --profile=sinapsis-$npm_config_env -c env=$npm_config_env",
+    "destroyStack": "cdk destroy $npm_config_stack-$npm_config_env --profile=sinapsis-$npm_config_env -e -c env=$npm_config_env"
   },
   "devDependencies": {
     "aws-cdk": "2.3.0",

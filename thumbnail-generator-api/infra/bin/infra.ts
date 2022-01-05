@@ -12,7 +12,7 @@ const app = new App();
 
 const env = app.node.tryGetContext("env");
 
-if (["test", "prod"].indexOf(env) === -1) {
+if (["test"].indexOf(env) === -1) {
   throw new Error(`Env -${env}- not supported`);
 }
 
@@ -22,12 +22,7 @@ let region: string = "";
 switch (env) {
   case "test":
     account = process.env.AWS_ACCOUNT_ID_TEST || "";
-    region = process.env.AWS_REGION_ID_TEST || "";
-    break;
-
-  case "prod":
-    account = process.env.AWS_ACCOUNT_ID_PROD || "";
-    region = process.env.AWS_REGION_ID_PROD || "";
+    region = process.env.AWS_REGION_TEST || "";
     break;
 }
 
