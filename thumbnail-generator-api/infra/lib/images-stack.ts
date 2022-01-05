@@ -11,12 +11,10 @@ import * as Util from "../util";
 import { CustomStackProps } from "../interfaces";
 
 export class ImagesStack extends Stack {
-  readonly imagesTable: dynamodb.Table;
-
   constructor(scope: Construct, id: string, props: CustomStackProps) {
     super(scope, id, Util.getCdkPropsFromCustomProps(props));
 
-    this.imagesTable = new dynamodb.Table(this, "ImagesTable", {
+    const imagesTable = new dynamodb.Table(this, "ImagesTable", {
       tableName: Util.getResourceNameWithPrefix(`images-${props.env}`),
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
       partitionKey: {
@@ -38,7 +36,7 @@ export class ImagesStack extends Stack {
 
     const dynamoPolicyStatement = new iam.PolicyStatement();
 
-    dynamoPolicyStatement.addResources(this.imagesTable.tableArn);
+    dynamoPolicyStatement.addResources(imagesTable.tableArn);
     dynamoPolicyStatement.addActions(
       Util.getReadActionsDynamoPolicyStatement().join(",")
     );
@@ -79,14 +77,14 @@ export class ImagesStack extends Stack {
       exportName: Util.getResourceNameWithPrefix(
         `images-table-arn-${props.env}`
       ),
-      value: this.imagesTable.tableArn,
+      value: imagesTable.tableArn,
     });
 
     new CfnOutput(this, "ImageUploadedTopicArn", {
       exportName: Util.getResourceNameWithPrefix(
         `image-uploaded-topic-arn-${props.env}`
       ),
-      value: this.imagesTable.tableArn,
+      value: imagesTable.tableArn,
     });
 
     new CfnOutput(this, "ImagesLambdaRoleArn", {
