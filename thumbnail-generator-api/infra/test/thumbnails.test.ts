@@ -20,11 +20,11 @@ test("Check that queue and role exists", () => {
   const template = Template.fromStack(stack);
 
   template.hasResourceProperties("AWS::SQS::Queue", {
-    sTopicName: Util.getResourceNameWithPrefix(`thumbnails-for-generate-test`),
+    QueueName: Util.getResourceNameWithPrefix(`thumbnails-for-generate-test`),
   });
 
   template.hasResourceProperties("AWS::SNS::Topic", {
-    sTopicName: Util.getResourceNameWithPrefix(`thumbnail-generated-test`),
+    TopicName: Util.getResourceNameWithPrefix(`thumbnail-generated-test`),
   });
 
   template.hasResourceProperties("AWS::IAM::Role", {
@@ -46,7 +46,7 @@ test("Check that the necessary outputs exists", () => {
 
   const template = Template.fromStack(stack);
 
-  template.hasOutput("ThumnailsForGenerateQueueArn", {
+  template.hasOutput("ThumbnailsForGenerateQueueArn", {
     Export: {
       Name: Util.getResourceNameWithPrefix(
         `thumbnails-for-generate-queue-arn-test`

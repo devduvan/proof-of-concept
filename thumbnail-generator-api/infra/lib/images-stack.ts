@@ -27,13 +27,6 @@ export class ImagesStack extends Stack {
       },
     });
 
-    const imageUploadedTopic = new sns.Topic(this, "ImageUploaded", {
-      topicName: Util.getResourceNameWithPrefix(`image-uploaded-${props.env}`),
-      displayName: Util.getResourceNameWithPrefix(
-        `image-uploaded-${props.env}`
-      ),
-    });
-
     const dynamoPolicyStatement = new iam.PolicyStatement();
 
     dynamoPolicyStatement.addResources(imagesTable.tableArn);
@@ -43,6 +36,13 @@ export class ImagesStack extends Stack {
     dynamoPolicyStatement.addActions(
       Util.getWriteActionsDynamoPolicyStatement().join(",")
     );
+
+    const imageUploadedTopic = new sns.Topic(this, "ImageUploaded", {
+      topicName: Util.getResourceNameWithPrefix(`image-uploaded-${props.env}`),
+      displayName: Util.getResourceNameWithPrefix(
+        `image-uploaded-${props.env}`
+      ),
+    });
 
     const snsPolicyStatement = new iam.PolicyStatement();
 
@@ -84,7 +84,7 @@ export class ImagesStack extends Stack {
       exportName: Util.getResourceNameWithPrefix(
         `image-uploaded-topic-arn-${props.env}`
       ),
-      value: imagesTable.tableArn,
+      value: imageUploadedTopic.topicArn,
     });
 
     new CfnOutput(this, "ImagesLambdaRoleArn", {

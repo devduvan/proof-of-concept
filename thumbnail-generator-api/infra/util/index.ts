@@ -32,3 +32,7 @@ export function getWriteActionsDynamoPolicyStatement() {
 export function getPublishActionsSnsPolicyStatement() {
   return ["sns:Publish"];
 }
+
+export function getSendActionsSqsPolicyStatement() {
+  return ["sqs:SendMessage"];
+}
