@@ -36,3 +36,11 @@ export function getPublishActionsSnsPolicyStatement() {
 export function getSendActionsSqsPolicyStatement() {
   return ["sqs:SendMessage"];
 }
+
+export function getReadActionsS3PolicyStatement() {
+  return ["s3:GetObject", "s3:DeleteObject"];
+}
+
+export function getWriteActionsS3PolicyStatement() {
+  return ["s3:PutObject"];
+}

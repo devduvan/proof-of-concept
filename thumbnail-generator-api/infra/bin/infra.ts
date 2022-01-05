@@ -3,6 +3,7 @@ import { App } from "aws-cdk-lib";
 import * as dotenv from "dotenv";
 
 import { ImagesStack } from "../lib/images-stack";
+import { ThumbnailsStack } from "../lib/thumbnails-stack";
 
 import * as Util from "../util";
 
@@ -39,4 +40,11 @@ new ImagesStack(app, `images-${env}`, {
   region: region,
   account: account,
   name: Util.getStackNameWithPrefix(`images-${env}`),
+});
+
+new ThumbnailsStack(app, `thumbnails-${env}`, {
+  env: env,
+  region: region,
+  account: account,
+  name: Util.getStackNameWithPrefix(`thumbnails-${env}`),
 });

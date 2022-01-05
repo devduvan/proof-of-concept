@@ -1,4 +1,4 @@
-import { CfnOutput, Duration, Stack } from "aws-cdk-lib";
+import { CfnOutput, Duration, Fn, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 import { aws_iam as iam, aws_sqs as sqs, aws_sns as sns } from "aws-cdk-lib";
@@ -47,6 +47,22 @@ export class ThumbnailsStack extends Stack {
       Util.getPublishActionsSnsPolicyStatement().join(",")
     );
 
+    const bucketArn = Fn.importValue(
+      Util.getResourceNameWithPrefix(`images-bucket-arn-${props.env}`)
+    );
+
+    const s3PolicyStatement = new iam.PolicyStatement();
+
+    s3PolicyStatement.addResources(`${bucketArn}/*`);
+
+    s3PolicyStatement.addActions(
+      Util.getReadActionsS3PolicyStatement().join(",")
+    );
+
+    s3PolicyStatement.addActions(
+      Util.getWriteActionsS3PolicyStatement().join(",")
+    );
+
     const thumbnailsLambdaRole = new iam.Role(this, "ThumbnailsLambdaRole", {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
       roleName: Util.getResourceNameWithPrefix(
@@ -64,7 +80,11 @@ export class ThumbnailsStack extends Stack {
       inlinePolicies: {
         [Util.getResourceNameWithPrefix(`lambda-role-policy-${props.env}`)]:
           new iam.PolicyDocument({
-            statements: [snsPolicyStatement, sqsPolicyStatement],
+            statements: [
+              snsPolicyStatement,
+              sqsPolicyStatement,
+              s3PolicyStatement,
+            ],
           }),
       },
     });
