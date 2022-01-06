@@ -1,50 +1,52 @@
 #!/usr/bin/env node
 import { App } from "aws-cdk-lib";
+
 import * as dotenv from "dotenv";
 
+import { SharedStack } from "../lib/shared-stack";
 import { ImagesStack } from "../lib/images-stack";
 import { ThumbnailsStack } from "../lib/thumbnails-stack";
 
 import * as Util from "../util";
 
-dotenv.config();
-
 const app = new App();
 
 const env = app.node.tryGetContext("env");
 
-if (["test"].indexOf(env) === -1) {
+dotenv.config({ path: `./.env.${env}` });
+
+if (["test", "dev"].indexOf(env) === -1) {
   throw new Error(`Env -${env}- not supported`);
 }
 
-let account: string = "";
-let region: string = "";
+const account: string | undefined = process.env.AWS_ACCOUNT_ID;
+const region: string | undefined = process.env.AWS_REGION;
 
-switch (env) {
-  case "test":
-    account = process.env.AWS_ACCOUNT_ID_TEST || "";
-    region = process.env.AWS_REGION_TEST || "";
-    break;
+if (env !== "dev" && !account) {
+  throw new Error("AWS_ACCOUNT_ID is not defined in your env");
 }
 
-if (account === "") {
-  throw new Error("Account is not defined");
+if (env !== "dev" && !region) {
+  throw new Error("AWS_REGION is not defined in your env");
 }
 
-if (region === "") {
-  throw new Error("Region is not defined");
-}
+const sharedProps = {
+  env: env,
+  account: account,
+  region: region,
+};
+
+new SharedStack(app, `shared-${env}`, {
+  ...sharedProps,
+  name: Util.getStackNameWithPrefix(`shared-${env}`),
+});
 
 new ImagesStack(app, `images-${env}`, {
-  env: env,
-  region: region,
-  account: account,
+  ...sharedProps,
   name: Util.getStackNameWithPrefix(`images-${env}`),
 });
 
 new ThumbnailsStack(app, `thumbnails-${env}`, {
-  env: env,
-  region: region,
-  account: account,
+  ...sharedProps,
   name: Util.getStackNameWithPrefix(`thumbnails-${env}`),
 });

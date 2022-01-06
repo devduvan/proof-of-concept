@@ -1,11 +1,19 @@
-export function getCdkPropsFromCustomProps(props: any) {
-  return {
-    env: {
+import { CustomStackProps } from "../interfaces";
+
+export function getCdkPropsFromCustomProps(props: CustomStackProps) {
+  let cdkProps = {
+    stackName: props.name,
+    env: {},
+  };
+
+  if (props.account || props.region) {
+    cdkProps.env = {
       account: props.account,
       region: props.region,
-    },
-    stackName: props.name,
-  };
+    };
+  }
+
+  return cdkProps;
 }
 
 export function getResourceNameWithPrefix(resourceName: string) {
