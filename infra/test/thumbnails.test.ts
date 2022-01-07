@@ -5,7 +5,7 @@ import * as ThumbnailsStack from "../lib/thumbnails-stack";
 
 import * as Util from "../util";
 
-test("Check that queue and role exists", () => {
+test("Check that table, queue and role exists", () => {
   const app = new cdk.App();
 
   const stack = new ThumbnailsStack.ThumbnailsStack(
@@ -18,6 +18,10 @@ test("Check that queue and role exists", () => {
   );
 
   const template = Template.fromStack(stack);
+
+  template.hasResourceProperties("AWS::DynamoDB::Table", {
+    TableName: Util.getResourceNameWithPrefix(`thumbnails-test`),
+  });
 
   template.hasResourceProperties("AWS::SQS::Queue", {
     QueueName: Util.getResourceNameWithPrefix(`thumbnails-for-generate-test`),
@@ -45,6 +49,12 @@ test("Check that the necessary outputs exists", () => {
   );
 
   const template = Template.fromStack(stack);
+
+  template.hasOutput("ThumbnailsTableArn", {
+    Export: {
+      Name: Util.getResourceNameWithPrefix(`thumbnails-table-arn-test`),
+    },
+  });
 
   template.hasOutput("ThumbnailsForGenerateQueueArn", {
     Export: {
