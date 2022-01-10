@@ -1,0 +1,31 @@
+custom:
+  stage: ${opt:stage, 'dev'}
+  profile: sinapsis-${self:custom.stage}
+  region: us-east-1
+  runtime: nodejs14.x
+  architecture: arm64
+  lambdaHashingVersion: 20201221
+  app:
+    name: thumbnail-generator-api
+  serverless-offline:
+    ignoreJWTSignature: true
+    noAuth: true
+    printOutput: true
+  env:
+    dev:
+      layersDir: "./layers"
+      layersPattern: "src/layers"
+      INFRA_LOCALHOST_URL: http://localhost:4566
+      API_BUCKET_NAME: ${self:custom.app.name}-images-${self:custom.stage}
+      IMAGES_TABLE_NAME: ${self:custom.app.name}-images-${self:custom.stage}
+      IMAGE_CREATED_TOPIC_ARN: arn:aws:sns:us-east-1:000000000000:thumbnail-generator-api-image-created-${self:custom.stage}
+    test:
+      layersDir: "/opt/nodejs"
+      layersPattern: "!./**"
+      INFRA_LOCALHOST_URL: ""
+      API_BUCKET_NAME:
+        Fn::ImportValue: ${self:custom.app.name}-images-bucket-name-${self:custom.stage}
+      IMAGES_TABLE_NAME:
+        Fn::ImportValue: ${self:custom.app.name}-images-table-name-${self:custom.stage}
+      IMAGE_CREATED_TOPIC_ARN:
+        Fn::ImportValue: ${self:custom.app.name}-image-created-topic-arn-${self:custom.stage}

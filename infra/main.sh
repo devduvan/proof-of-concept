@@ -19,7 +19,7 @@ case $command in
   "config")
     if  [[ "$env" == "dev" ]]
     then
-      localstack start -d
+      docker-compose up -d
       fullCommand="cdklocal bootstrap -c env=$env"
     else
       fullCommand="cdk bootstrap --profile sinapsis-$env -c env=$env"

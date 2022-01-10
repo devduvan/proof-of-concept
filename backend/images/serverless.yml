@@ -1,0 +1,61 @@
+service: ${self:custom.app.name}-backend-images
+
+custom: ${file(../serverless.common.yml):custom}
+
+projectDir: ../
+
+package:
+  individually: true
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  region: ${self:custom.region}
+  profile: ${self:custom.profile}
+  stage: ${self:custom.stage}
+  runtime: ${self:custom.runtime}
+  architecture: ${self:custom.architecture}
+  lambdaHashingVersion: ${self:custom.lambdaHashingVersion}
+  httpApi:
+    id:
+      Fn::ImportValue: ${self:custom.app.name}-id-${self:custom.stage}
+  iam:
+    role:
+      Fn::ImportValue: ${self:custom.app.name}-images-lambda-role-arn-${self:custom.stage}
+  layers:
+    - { Ref: ImagesLambdaLayer }
+  environment:
+    ENV: ${self:custom.stage}
+    INFRA_LOCALHOST_URL: ${self:custom.env.${self:custom.stage}.INFRA_LOCALHOST_URL}
+    LAYERS_DIR: ${self:custom.env.${self:custom.stage}.layersDir}
+    API_BUCKET_NAME: ${self:custom.env.${self:custom.stage}.API_BUCKET_NAME}
+    IMAGES_TABLE_NAME: ${self:custom.env.${self:custom.stage}.IMAGES_TABLE_NAME}
+    IMAGE_CREATED_TOPIC_ARN: ${self:custom.env.${self:custom.stage}.IMAGE_CREATED_TOPIC_ARN}
+
+layers:
+  images:
+    path: src/layers
+    name: ${self:custom.app.name}-images-${self:custom.stage}
+    description: Layer for images
+    retain: false
+
+functions:
+  createImage:
+    name: ${self:custom.app.name}-create-image-${self:custom.stage}
+    description: Create an image
+    events:
+      - httpApi:
+          method: POST
+          path: /images
+          authorizer:
+            id:
+              Fn::ImportValue: ${self:custom.app.name}-jwt-authorizer-id-${self:custom.stage}
+            scopes:
+              - images2/write
+    handler: src/create-image.handler
+    package:
+      patterns:
+        - ${self:custom.env.${self:custom.stage}.layersPattern}
+        - src/create-image.js

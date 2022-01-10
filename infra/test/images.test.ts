@@ -20,7 +20,7 @@ test("Check that table, topic and role exists", () => {
   });
 
   template.hasResourceProperties("AWS::SNS::Topic", {
-    TopicName: Util.getResourceNameWithPrefix(`image-uploaded-test`),
+    TopicName: Util.getResourceNameWithPrefix(`image-created-test`),
   });
 
   template.hasResourceProperties("AWS::IAM::Role", {
@@ -44,9 +44,15 @@ test("Check that the necessary outputs exists", () => {
     },
   });
 
-  template.hasOutput("ImageUploadedTopicArn", {
+  template.hasOutput("ImagesTableName", {
     Export: {
-      Name: Util.getResourceNameWithPrefix(`image-uploaded-topic-arn-test`),
+      Name: Util.getResourceNameWithPrefix(`images-table-name-test`),
+    },
+  });
+
+  template.hasOutput("ImageCreatedTopicArn", {
+    Export: {
+      Name: Util.getResourceNameWithPrefix(`image-created-topic-arn-test`),
     },
   });
 

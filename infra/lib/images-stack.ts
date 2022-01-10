@@ -1,4 +1,4 @@
-import { CfnOutput, Duration, Fn, Stack } from "aws-cdk-lib";
+import { CfnOutput, Duration, Fn, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 import {
@@ -26,29 +26,28 @@ export class ImagesStack extends Stack {
         type: dynamodb.AttributeType.STRING,
       },
     });
+    imagesTable.applyRemovalPolicy(RemovalPolicy.DESTROY);
 
     const dynamoPolicyStatement = new iam.PolicyStatement();
 
     dynamoPolicyStatement.addResources(imagesTable.tableArn);
     dynamoPolicyStatement.addActions(
-      Util.getReadActionsDynamoPolicyStatement().join(",")
+      ...Util.getReadActionsDynamoPolicyStatement()
     );
     dynamoPolicyStatement.addActions(
-      Util.getWriteActionsDynamoPolicyStatement().join(",")
+      ...Util.getWriteActionsDynamoPolicyStatement()
     );
 
-    const imageUploadedTopic = new sns.Topic(this, "ImageUploaded", {
-      topicName: Util.getResourceNameWithPrefix(`image-uploaded-${props.env}`),
-      displayName: Util.getResourceNameWithPrefix(
-        `image-uploaded-${props.env}`
-      ),
+    const imageCreatedTopic = new sns.Topic(this, "ImageCreatedTopic", {
+      topicName: Util.getResourceNameWithPrefix(`image-created-${props.env}`),
+      displayName: Util.getResourceNameWithPrefix(`image-created-${props.env}`),
     });
 
     const snsPolicyStatement = new iam.PolicyStatement();
 
-    snsPolicyStatement.addResources(imageUploadedTopic.topicArn);
+    snsPolicyStatement.addResources(imageCreatedTopic.topicArn);
     snsPolicyStatement.addActions(
-      Util.getPublishActionsSnsPolicyStatement().join(",")
+      ...Util.getPublishActionsSnsPolicyStatement()
     );
 
     const bucketArn = Fn.importValue(
@@ -59,13 +58,9 @@ export class ImagesStack extends Stack {
 
     s3PolicyStatement.addResources(`${bucketArn}/*`);
 
-    s3PolicyStatement.addActions(
-      Util.getReadActionsS3PolicyStatement().join(",")
-    );
+    s3PolicyStatement.addActions(...Util.getReadActionsS3PolicyStatement());
 
-    s3PolicyStatement.addActions(
-      Util.getWriteActionsS3PolicyStatement().join(",")
-    );
+    s3PolicyStatement.addActions(...Util.getWriteActionsS3PolicyStatement());
 
     const imagesLambdaRole = new iam.Role(this, "ImagesLambdaRole", {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
@@ -100,11 +95,18 @@ export class ImagesStack extends Stack {
       value: imagesTable.tableArn,
     });
 
-    new CfnOutput(this, "ImageUploadedTopicArn", {
+    new CfnOutput(this, "ImagesTableName", {
       exportName: Util.getResourceNameWithPrefix(
-        `image-uploaded-topic-arn-${props.env}`
+        `images-table-name-${props.env}`
       ),
-      value: imageUploadedTopic.topicArn,
+      value: imagesTable.tableName,
+    });
+
+    new CfnOutput(this, "ImageCreatedTopicArn", {
+      exportName: Util.getResourceNameWithPrefix(
+        `image-created-topic-arn-${props.env}`
+      ),
+      value: imageCreatedTopic.topicArn,
     });
 
     new CfnOutput(this, "ImagesLambdaRoleArn", {

@@ -1,5 +1,5 @@
 {
-  "name": "infra",
+  "name": "thumbnail-generator-api-infra",
   "version": "0.1.0",
   "bin": {
     "infra": "bin/infra.js"
@@ -10,6 +10,7 @@
     "test": "jest",
     "cdk": "cdk",
     "config": "./main.sh -c config -e $npm_config_env",
+    "start": "docker-compose up -d && tsc -w",
     "deploy": "./main.sh -c deploy -e $npm_config_env",
     "deployStack": "./main.sh -c deployStack -e $npm_config_env -s $npm_config_stack",
     "destroy": "./main.sh -c destroy -e $npm_config_env",

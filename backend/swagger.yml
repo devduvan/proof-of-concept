@@ -205,47 +205,41 @@ components:
       summary: This is an example of validation error
       value:
         errors:
-          - code: GT1000
+          - code: "1000"
             message: The file uploaded is not a valid jpeg file
     InternalServerErrorResponse:
       summary: This is an example of internal server error
       value:
         errors:
-          - code: '500'
+          - code: "500"
             message: Has been occurred unexpected error, please retry again later
     NotFoundErrorResponse:
       summary: This is an example of not found error
       value:
         errors:
-          - code: '404'
+          - code: "404"
             message: The image not exists
     ImageForUpload:
       summary: This is an example of image for upload
-      externalValue: https://media-exp1.licdn.com/dms/image/C4E0BAQEmZ6-RlFCDNA/company-logo_200_200/0/1558041156098?e=2159024400&v=beta&t=YwiI8-Lol20SVbZXDGRp2keAKjtIuwLej4lvQqGA4AI
-    Image:
-      summary: This is an example of image 
-      value:
-        id: XXXXXXXXXXX
-        name: sinapsis-logo.jpeg
-        status: THUMBNAILS_GENERATED
-        url: https://s3-example.com
-    Thumbnail:
-      summary: This is an example of thumbnail 
-      value:
-        id: XXXXXXXXXXX
-        size: 400x300
-        url: https://s3-example.com
+      externalValue: 'https://media-exp1.licdn.com/dms/image/C4E0BAQEmZ6-RlFCDNA/company-logo_200_200/0/1558041156098?e=2159024400&v=beta&t=YwiI8-Lol20SVbZXDGRp2keAKjtIuwLej4lvQqGA4AI'
     ImageResponse:
       summary: This is an example of image response
       value:
         image:
-          $ref: '#/components/examples/Image'
+          id: XXXXXXXXXXX
+          name: sinapsis-logo.jpeg
+          status: THUMBNAILS_GENERATED
+          url: https://s3-example.com
     ThumbnailsResponse:
       summary: This is an example of thumbnails response
       value:
         thumbnails:
-          - $ref: '#/components/examples/Thumbnail'
-          - $ref: '#/components/examples/Thumbnail'
+          - id: XXXXXXXXXXX
+            size: 400x300
+            url: https://s3-example.com
+          - id: XXXXXXXXXXX
+            size: 400x300
+            url: https://s3-example.com
   securitySchemes:
     auth:
       type: http

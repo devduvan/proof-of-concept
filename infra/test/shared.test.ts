@@ -48,6 +48,12 @@ test("Check that the necessary outputs exists", () => {
     },
   });
 
+  template.hasOutput("ImagesBucketName", {
+    Export: {
+      Name: Util.getResourceNameWithPrefix(`images-bucket-name-test`),
+    },
+  });
+
   template.hasOutput("ThumbnailsApiId", {
     Export: {
       Name: Util.getResourceNameWithPrefix(`id-test`),

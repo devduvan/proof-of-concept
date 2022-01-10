@@ -1,4 +1,4 @@
-import { CfnOutput, Duration, Fn, Stack } from "aws-cdk-lib";
+import { CfnOutput, Duration, Fn, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 import {
@@ -27,15 +27,16 @@ export class ThumbnailsStack extends Stack {
         type: dynamodb.AttributeType.STRING,
       },
     });
+    thumbnailsTable.applyRemovalPolicy(RemovalPolicy.DESTROY);
 
     const dynamoPolicyStatement = new iam.PolicyStatement();
 
     dynamoPolicyStatement.addResources(thumbnailsTable.tableArn);
     dynamoPolicyStatement.addActions(
-      Util.getReadActionsDynamoPolicyStatement().join(",")
+      ...Util.getReadActionsDynamoPolicyStatement()
     );
     dynamoPolicyStatement.addActions(
-      Util.getWriteActionsDynamoPolicyStatement().join(",")
+      ...Util.getWriteActionsDynamoPolicyStatement()
     );
 
     const thumbnailsForGenerateQueue = new sqs.Queue(
@@ -51,9 +52,7 @@ export class ThumbnailsStack extends Stack {
     const sqsPolicyStatement = new iam.PolicyStatement();
 
     sqsPolicyStatement.addResources(thumbnailsForGenerateQueue.queueArn);
-    sqsPolicyStatement.addActions(
-      Util.getSendActionsSqsPolicyStatement().join(",")
-    );
+    sqsPolicyStatement.addActions(...Util.getSendActionsSqsPolicyStatement());
 
     const thumbnailGeneratedTopic = new sns.Topic(
       this,
@@ -72,7 +71,7 @@ export class ThumbnailsStack extends Stack {
 
     snsPolicyStatement.addResources(thumbnailGeneratedTopic.topicArn);
     snsPolicyStatement.addActions(
-      Util.getPublishActionsSnsPolicyStatement().join(",")
+      ...Util.getPublishActionsSnsPolicyStatement()
     );
 
     const bucketArn = Fn.importValue(
@@ -83,13 +82,9 @@ export class ThumbnailsStack extends Stack {
 
     s3PolicyStatement.addResources(`${bucketArn}/*`);
 
-    s3PolicyStatement.addActions(
-      Util.getReadActionsS3PolicyStatement().join(",")
-    );
+    s3PolicyStatement.addActions(...Util.getReadActionsS3PolicyStatement());
 
-    s3PolicyStatement.addActions(
-      Util.getWriteActionsS3PolicyStatement().join(",")
-    );
+    s3PolicyStatement.addActions(...Util.getWriteActionsS3PolicyStatement());
 
     const thumbnailsLambdaRole = new iam.Role(this, "ThumbnailsLambdaRole", {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
