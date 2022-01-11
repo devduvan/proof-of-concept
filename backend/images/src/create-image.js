@@ -1,15 +1,15 @@
 "use strict";
 
-const Id = require(`${process.env.LAYERS_DIR}/lib/Id`);
-const FormData = require(`${process.env.LAYERS_DIR}/lib/FormData`);
+const Id = require(`${process.env.GENERAL_LAYER_DIR}/lib/Id`);
+const FormData = require(`${process.env.GENERAL_LAYER_DIR}/lib/FormData`);
 
-const ImageModel = require(`${process.env.LAYERS_DIR}/models/ImageModel`);
+const ImageModel = require(`${process.env.LAYER_DIR}/models/ImageModel`);
 
-const ImageMapper = require(`${process.env.LAYERS_DIR}/mappers/ImageMapper`);
+const ImageMapper = require(`${process.env.LAYER_DIR}/mappers/ImageMapper`);
 
-const ValidationException = require(`${process.env.LAYERS_DIR}/exceptions/ValidationException`);
+const ValidationException = require(`${process.env.GENERAL_LAYER_DIR}/exceptions/ValidationException`);
 
-const ApiGatewayResponse = require(`${process.env.LAYERS_DIR}/responses/ApiGatewayResponse`);
+const ApiGatewayResponse = require(`${process.env.GENERAL_LAYER_DIR}/responses/ApiGatewayResponse`);
 
 const SUPPORTED_IMAGE_TYPES = ["image/jpeg"];
 

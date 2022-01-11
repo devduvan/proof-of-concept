@@ -1,0 +1,21 @@
+{
+  "name": "thumbnail-generator-api-backend-thumbnails",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest",
+    "deploy": "sls deploy --stage $npm_config_env"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "jest": "^27.4.7",
+    "serverless-latest-layer-version": "^2.1.1",
+    "serverless-offline": "^8.3.1"
+  }
+}

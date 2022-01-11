@@ -1,0 +1,23 @@
+{
+  "name": "thumbnail-generator-api-backend-layers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lambda-multipart-parser": "^1.0.1",
+    "moment-timezone": "^0.5.34",
+    "sharp": "^0.29.3",
+    "ulid": "^2.3.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.1054.0"
+  }
+}

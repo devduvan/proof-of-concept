@@ -6,6 +6,7 @@ import {
   aws_dynamodb as dynamodb,
   aws_sqs as sqs,
   aws_sns as sns,
+  aws_sns_subscriptions as subscriptions,
 } from "aws-cdk-lib";
 
 import * as Util from "../util";
@@ -49,27 +50,39 @@ export class ThumbnailsStack extends Stack {
       }
     );
 
+    const imageCreatedTopic = sns.Topic.fromTopicArn(
+      this,
+      "ImageCreatedTopic",
+      Fn.importValue(
+        Util.getResourceNameWithPrefix(`image-created-topic-arn-${props.env}`)
+      )
+    );
+
+    imageCreatedTopic.addSubscription(
+      new subscriptions.SqsSubscription(thumbnailsForGenerateQueue)
+    );
+
     const sqsPolicyStatement = new iam.PolicyStatement();
 
     sqsPolicyStatement.addResources(thumbnailsForGenerateQueue.queueArn);
     sqsPolicyStatement.addActions(...Util.getSendActionsSqsPolicyStatement());
 
-    const thumbnailGeneratedTopic = new sns.Topic(
+    const thumbnailsGeneratedTopic = new sns.Topic(
       this,
-      "ThumbnailGeneratedTopic",
+      "ThumbnailsGeneratedTopic",
       {
         topicName: Util.getResourceNameWithPrefix(
-          `thumbnail-generated-${props.env}`
+          `thumbnails-generated-${props.env}`
         ),
         displayName: Util.getResourceNameWithPrefix(
-          `thumbnail-generated-${props.env}`
+          `thumbnails-generated-${props.env}`
         ),
       }
     );
 
     const snsPolicyStatement = new iam.PolicyStatement();
 
-    snsPolicyStatement.addResources(thumbnailGeneratedTopic.topicArn);
+    snsPolicyStatement.addResources(thumbnailsGeneratedTopic.topicArn);
     snsPolicyStatement.addActions(
       ...Util.getPublishActionsSnsPolicyStatement()
     );
@@ -127,11 +140,11 @@ export class ThumbnailsStack extends Stack {
       value: thumbnailsForGenerateQueue.queueArn,
     });
 
-    new CfnOutput(this, "ThumbnailGeneratedTopicArn", {
+    new CfnOutput(this, "ThumbnailsGeneratedTopicArn", {
       exportName: Util.getResourceNameWithPrefix(
-        `thumbnail-generated-topic-arn-${props.env}`
+        `thumbnails-generated-topic-arn-${props.env}`
       ),
-      value: thumbnailGeneratedTopic.topicArn,
+      value: thumbnailsGeneratedTopic.topicArn,
     });
 
     new CfnOutput(this, "ThumbnailsLambdaRoleArn", {

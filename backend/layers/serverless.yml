@@ -1,0 +1,21 @@
+service: ${self:custom.app.name}-backend-layers
+
+projectDir: "../"
+
+custom: ${file(../serverless.common.yml):custom}
+
+provider:
+  name: aws
+  region: ${self:custom.region}
+  profile: ${self:custom.profile}
+  stage: ${self:custom.stage}
+  runtime: ${self:custom.runtime}
+  architecture: ${self:custom.architecture}
+  lambdaHashingVersion: ${self:custom.lambdaHashingVersion}
+
+layers:
+  general:
+    path: src/general
+    name: ${self:custom.app.name}-general-${self:custom.stage}
+    description: General layer with shared resources for backend
+    retain: true

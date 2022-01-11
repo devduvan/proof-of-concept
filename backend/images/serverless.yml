@@ -9,6 +9,7 @@ package:
 
 plugins:
   - serverless-offline
+  - serverless-latest-layer-version
 
 provider:
   name: aws
@@ -25,18 +26,20 @@ provider:
     role:
       Fn::ImportValue: ${self:custom.app.name}-images-lambda-role-arn-${self:custom.stage}
   layers:
+    - ${self:custom.env.${self:custom.stage}.layers.general}
     - { Ref: ImagesLambdaLayer }
   environment:
     ENV: ${self:custom.stage}
     INFRA_LOCALHOST_URL: ${self:custom.env.${self:custom.stage}.INFRA_LOCALHOST_URL}
-    LAYERS_DIR: ${self:custom.env.${self:custom.stage}.layersDir}
+    GENERAL_LAYER_DIR: ${self:custom.env.${self:custom.stage}.generalLayerDir}
+    LAYER_DIR: ${self:custom.env.${self:custom.stage}.layerDir}
     API_BUCKET_NAME: ${self:custom.env.${self:custom.stage}.API_BUCKET_NAME}
     IMAGES_TABLE_NAME: ${self:custom.env.${self:custom.stage}.IMAGES_TABLE_NAME}
     IMAGE_CREATED_TOPIC_ARN: ${self:custom.env.${self:custom.stage}.IMAGE_CREATED_TOPIC_ARN}
 
 layers:
   images:
-    path: src/layers
+    path: src/layer
     name: ${self:custom.app.name}-images-${self:custom.stage}
     description: Layer for images
     retain: false

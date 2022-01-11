@@ -27,8 +27,12 @@ test("Check that table, queue and role exists", () => {
     QueueName: Util.getResourceNameWithPrefix(`thumbnails-for-generate-test`),
   });
 
+  template.hasResourceProperties("AWS::SNS::Subscription", {
+    Protocol: "sqs",
+  });
+
   template.hasResourceProperties("AWS::SNS::Topic", {
-    TopicName: Util.getResourceNameWithPrefix(`thumbnail-generated-test`),
+    TopicName: Util.getResourceNameWithPrefix(`thumbnails-generated-test`),
   });
 
   template.hasResourceProperties("AWS::IAM::Role", {

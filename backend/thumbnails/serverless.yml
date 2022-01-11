@@ -1,0 +1,59 @@
+service: ${self:custom.app.name}-backend-thumbnails
+
+custom: ${file(../serverless.common.yml):custom}
+
+projectDir: ../
+
+package:
+  individually: true
+
+plugins:
+  - serverless-offline
+  - serverless-latest-layer-version
+
+provider:
+  name: aws
+  region: ${self:custom.region}
+  profile: ${self:custom.profile}
+  stage: ${self:custom.stage}
+  runtime: ${self:custom.runtime}
+  architecture: ${self:custom.architecture}
+  lambdaHashingVersion: ${self:custom.lambdaHashingVersion}
+  httpApi:
+    id:
+      Fn::ImportValue: ${self:custom.app.name}-id-${self:custom.stage}
+  iam:
+    role:
+      Fn::ImportValue: ${self:custom.app.name}-thumbnails-lambda-role-arn-${self:custom.stage}
+  layers:
+    - ${self:custom.env.${self:custom.stage}.layers.general}
+    - { Ref: ThumbnailsLambdaLayer }
+  environment:
+    ENV: ${self:custom.stage}
+    INFRA_LOCALHOST_URL: ${self:custom.env.${self:custom.stage}.INFRA_LOCALHOST_URL}
+    GENERAL_LAYER_DIR: ${self:custom.env.${self:custom.stage}.generalLayerDir}
+    LAYER_DIR: ${self:custom.env.${self:custom.stage}.layerDir}
+    API_BUCKET_NAME: ${self:custom.env.${self:custom.stage}.API_BUCKET_NAME}
+    THUMBNAILS_TABLE_NAME: ${self:custom.env.${self:custom.stage}.THUMBNAILS_TABLE_NAME}
+    THUMBNAILS_GENERATED_TOPIC_ARN: ${self:custom.env.${self:custom.stage}.THUMBNAILS_GENERATED_TOPIC_ARN}
+
+layers:
+  thumbnails:
+    path: src/layer
+    name: ${self:custom.app.name}-thumbnails-${self:custom.stage}
+    description: Layer for thumbnails
+    retain: false
+
+functions:
+  generateThumbnails:
+    name: ${self:custom.app.name}-generate-thumbnails-${self:custom.stage}
+    description: Generate thumbnails after image has been created
+    events:
+      - sqs:
+          arn:
+            Fn::ImportValue: ${self:custom.app.name}-thumbnails-for-generate-queue-arn-${self:custom.stage}
+    handler: src/generate-thumbnails.handler
+    package:
+      patterns:
+        - ${self:custom.env.${self:custom.stage}.layersPattern}
+        - src/generate-thumbnails.js

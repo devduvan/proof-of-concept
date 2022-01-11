@@ -13,14 +13,20 @@ custom:
     printOutput: true
   env:
     dev:
-      layersDir: "./layers"
-      layersPattern: "src/layers"
+      generalLayerDir: "/Users/devduvan/projects/personal/sinapsis/proof-of-concept/backend/layers/src/general"
+      layerDir: "./layer"
+      layersPattern: "src/layer"
       INFRA_LOCALHOST_URL: http://localhost:4566
       API_BUCKET_NAME: ${self:custom.app.name}-images-${self:custom.stage}
       IMAGES_TABLE_NAME: ${self:custom.app.name}-images-${self:custom.stage}
-      IMAGE_CREATED_TOPIC_ARN: arn:aws:sns:us-east-1:000000000000:thumbnail-generator-api-image-created-${self:custom.stage}
+      IMAGE_CREATED_TOPIC_ARN: arn:aws:sns:${AWS::Region}:${AWS::AccountId}:thumbnail-generator-api-image-created-${self:custom.stage}
+      THUMBNAILS_TABLE_NAME: ${self:custom.app.name}-thumbnails-${self:custom.stage}
+      THUMBNAILS_GENERATED_TOPIC_ARN: arn:aws:sns:${AWS::Region}:${AWS::AccountId}:thumbnail-generator-api-thumbnails-generated-${self:custom.stage}
+      layers:
+        general: arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${self:custom.app.name}-general-${self:custom.stage}:latest
     test:
-      layersDir: "/opt/nodejs"
+      generalLayerDir: "/opt/nodejs"
+      layerDir: "/opt/nodejs"
       layersPattern: "!./**"
       INFRA_LOCALHOST_URL: ""
       API_BUCKET_NAME:
@@ -29,3 +35,9 @@ custom:
         Fn::ImportValue: ${self:custom.app.name}-images-table-name-${self:custom.stage}
       IMAGE_CREATED_TOPIC_ARN:
         Fn::ImportValue: ${self:custom.app.name}-image-created-topic-arn-${self:custom.stage}
+      THUMBNAILS_TABLE_NAME:
+        Fn::ImportValue: ${self:custom.app.name}-thumbnails-table-name-${self:custom.stage}
+      THUMBNAILS_GENERATED_TOPIC_ARN:
+        Fn::ImportValue: ${self:custom.app.name}-thumbnails-generated-topic-arn-${self:custom.stage}
+      layers:
+        general: arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:${self:custom.app.name}-general-${self:custom.stage}:latest
