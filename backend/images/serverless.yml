@@ -53,9 +53,26 @@ functions:
             id:
               Fn::ImportValue: ${self:custom.app.name}-jwt-authorizer-id-${self:custom.stage}
             scopes:
-              - images2/write
+              - images/write
     handler: src/create-image.handler
     package:
       patterns:
         - ${self:custom.env.${self:custom.stage}.layersPattern}
         - src/create-image.js
+  getImage:
+    name: ${self:custom.app.name}-get-image-${self:custom.stage}
+    description: Get an image by id
+    events:
+      - httpApi:
+          method: GET
+          path: /images/{id}
+          authorizer:
+            id:
+              Fn::ImportValue: ${self:custom.app.name}-jwt-authorizer-id-${self:custom.stage}
+            scopes:
+              - images/read
+    handler: src/get-image.handler
+    package:
+      patterns:
+        - ${self:custom.env.${self:custom.stage}.layersPattern}
+        - src/get-image.js

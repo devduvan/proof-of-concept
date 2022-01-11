@@ -4,7 +4,7 @@ const api = supertest(process.env.API_URL);
 
 test("Image not found", async () => {
   const { body } = await api
-    .get(`/images/not`).expect(404);
+    .get(`/images/TEST_ERROR`).expect(404);
 });
 
 test("Image retrieved with success", async () => {
@@ -17,5 +17,5 @@ test("Image retrieved with success", async () => {
   const { body } = await api
     .get(`/images/${imageCreated.id}`).expect(200);
 
-  expect(imageCreated).toStrictEqual(body);
+  expect(imageCreated).toStrictEqual(body.image);
 });

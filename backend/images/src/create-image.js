@@ -31,7 +31,7 @@ const validateEvent = (event) => {
   }
 
   if (contentLength >= 5000000) {
-    throw new ValidationException("FILE_SIZE_NOT_SUPPORTED");
+    throw new ValidationException("IMAGE_SIZE_NOT_SUPPORTED");
   }
 };
 
@@ -44,14 +44,14 @@ const createImageModel = async (event) => {
 
   if (!file) {
     if (files.length <= 0) {
-      throw new ValidationException("FILE_IS_EMPTY");
+      throw new ValidationException("IMAGE_IS_EMPTY");
     } else {
       throw new ValidationException("IMAGE_PARAM_IS_REQUIRED");
     }
   }
 
   if (SUPPORTED_IMAGE_TYPES.indexOf(file.type) === -1) {
-    throw new ValidationException("FILE_TYPE_NOT_SUPPORTED");
+    throw new ValidationException("IMAGE_TYPE_NOT_SUPPORTED");
   }
 
   const id = Id.generate();

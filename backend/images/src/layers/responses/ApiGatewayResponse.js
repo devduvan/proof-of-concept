@@ -59,12 +59,12 @@ class ApiGatewayResponse {
     }
 
     return ApiGatewayResponse.response(httpStatusCode, {
-      errors: [
-        {
+      errors: {
+        [code]: {
           code: code,
-          message: message,
-        },
-      ],
+          message: message
+        }
+      },
     });
   }
 }

@@ -5,6 +5,8 @@ const moment = require("moment-timezone");
 
 const Env = require("../lib/Env");
 
+const ImageModel = require("../models/ImageModel");
+
 const db = new DynamoDB.DocumentClient({
   ...Env.getConfigForAwsService("DynamoDB"),
 });
@@ -45,6 +47,28 @@ class ImageMapper {
         Item: ImageMapper.getObjectToDb(image),
       })
       .promise();
+  }
+
+  static async getById(idUser, id) {
+    let image = null;
+
+     try {
+      const data = await db.get({
+        TableName: IMAGES_TABLE_NAME,
+        Key: {
+          idUser: idUser,
+          id: id,
+        },
+      }).promise();
+
+      if (data && data.Item) {
+        image = new ImageModel(data.Item);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    return image;
   }
 }
 

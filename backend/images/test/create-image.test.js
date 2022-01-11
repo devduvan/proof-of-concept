@@ -8,13 +8,11 @@ test("Image is greater than 5MB", async () => {
     .attach("image", `${__dirname}/images/400-by-size.jpg`)
     .expect(400);
 
-  expect(body).toStrictEqual({
-    errors: [
-      {
-        code: "GT1001",
-        message: "File is more than 5MB",
-      },
-    ],
+  expect(body.errors).toStrictEqual({
+    IMAGES_1: {
+      code: "IMAGES_1",
+      message: "Image is greater than 5MB",
+    }
   });
 });
 
@@ -24,13 +22,25 @@ test("Image PNG not supported", async () => {
     .attach("image", `${__dirname}/images/400-by-type.png`)
     .expect(400);
 
-  expect(body).toStrictEqual({
-    errors: [
-      {
-        code: "GT1002",
-        message: "File is not a valid JPEG image",
-      },
-    ],
+  expect(body.errors).toStrictEqual({
+    IMAGES_2: {
+      code: "IMAGES_2",
+      message: "Image is not a valid JPEG image",
+    }
+  });
+});
+
+test("Image param is empty", async () => {
+  const { body } = await api
+    .post("/images")
+    .attach("image", `${__dirname}/images/empty.jpeg`)
+    .expect(400);
+
+  expect(body.errors).toStrictEqual({
+    IMAGES_3: {
+      code: "IMAGES_3",
+      message: "Image param is empty",
+    }
   });
 });
 
@@ -40,13 +50,11 @@ test("Image param not exists in the request", async () => {
     .attach("noImage", `${__dirname}/images/200.jpeg`)
     .expect(400);
 
-  expect(body).toStrictEqual({
-    errors: [
-      {
-        code: "GT1004",
-        message: "Image param is required",
-      },
-    ],
+  expect(body.errors).toStrictEqual({
+    IMAGES_4: {
+      code: "IMAGES_4",
+      message: "Image param is required",
+    }
   });
 });
 
