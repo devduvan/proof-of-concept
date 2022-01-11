@@ -62,6 +62,7 @@ functions:
       patterns:
         - ${self:custom.env.${self:custom.stage}.layersPattern}
         - src/create-image.js
+
   getImage:
     name: ${self:custom.app.name}-get-image-${self:custom.stage}
     description: Get an image by id
@@ -79,3 +80,17 @@ functions:
       patterns:
         - ${self:custom.env.${self:custom.stage}.layersPattern}
         - src/get-image.js
+
+  updateImageFromThumbnailsTopic:
+    name: ${self:custom.app.name}-update-image-from-thumbnails-topic-${self:custom.stage}
+    description: Update image from thumbnails generated topic
+    events:
+      - sns:
+          topicName: ${self:custom.app.name}-thumbnails-generated-${self:custom.stage}
+          arn:
+            Fn::ImportValue: ${self:custom.app.name}-thumbnails-generated-topic-arn-${self:custom.stage}
+    handler: src/update-image-from-thumbnails-topic.handler
+    package:
+      patterns:
+        - ${self:custom.env.${self:custom.stage}.layersPattern}
+        - src/update-image-from-thumbnails-topic.js
