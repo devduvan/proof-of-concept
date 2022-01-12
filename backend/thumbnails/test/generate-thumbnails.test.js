@@ -6,7 +6,6 @@ const sqs = require("./mocks/sqs");
 const images = require("./mocks/images");
 
 test("Thumbnails generated with success", async () => {
-  const initTestDateTime = moment();
   const image = await images.createImage();
 
   const response = await handler.handler(sqs.getEventFromImage(image));

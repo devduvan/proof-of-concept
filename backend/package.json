@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "npx eslint .",
     "start": "./main.sh -c start -e dev",
-    "deploy": "'npm run lint' && ./main.sh -c deploy -e $npm_config_env",
+    "deploy": "npm run lint && ./main.sh -c deploy -e $npm_config_env",
+    "integrationTests": "jest",
     "test": "./main.sh -c test",
     "deployStack": "'npm run lint' && ./main.sh -c deploy -e $npm_config_env -s $npm_config_stack",
     "destroy": "./main.sh -c destroy -e $npm_config_env",
@@ -15,9 +16,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "dotenv": "^11.0.0",
     "eslint": "^8.6.0",
     "eslint-plugin-jest": "^25.3.4",
+    "jest": "^27.4.7",
     "nodemon": "^2.0.15",
-    "serverless-offline-multi": "^1.2.0"
+    "serverless-offline-multi": "^1.2.0",
+    "supertest": "^6.2.1"
   }
 }
