@@ -69,7 +69,7 @@ functions:
             id:
               Fn::ImportValue: ${self:custom.app.name}-jwt-authorizer-id-${self:custom.stage}
             scopes:
-              - thumbnails/read
+              - "read:thumbnails"
     handler: src/get-thumbnails.handler
     package:
       patterns:

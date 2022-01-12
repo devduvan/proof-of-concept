@@ -62,7 +62,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /thumbnails:
     get:
-      summary: Get generated thumbnails
+      summary: Get thumbnails
       description: 'Get all generated thumbnails'
       operationId: getThumbnails
       tags:

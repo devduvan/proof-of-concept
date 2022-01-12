@@ -56,7 +56,7 @@ functions:
             id:
               Fn::ImportValue: ${self:custom.app.name}-jwt-authorizer-id-${self:custom.stage}
             scopes:
-              - images/write
+              - "write:images"
     handler: src/create-image.handler
     package:
       patterns:
@@ -74,7 +74,7 @@ functions:
             id:
               Fn::ImportValue: ${self:custom.app.name}-jwt-authorizer-id-${self:custom.stage}
             scopes:
-              - images/read
+              - "read:images"
     handler: src/get-image.handler
     package:
       patterns:

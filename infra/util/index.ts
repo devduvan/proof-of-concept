@@ -42,7 +42,12 @@ export function getPublishActionsSnsPolicyStatement() {
 }
 
 export function getSendActionsSqsPolicyStatement() {
-  return ["sqs:SendMessage", "sqs:ReceiveMessage", "sqs:DeleteMessage"];
+  return [
+    "sqs:SendMessage",
+    "sqs:ReceiveMessage",
+    "sqs:DeleteMessage",
+    "sqs:GetQueueAttributes",
+  ];
 }
 
 export function getReadActionsS3PolicyStatement() {
