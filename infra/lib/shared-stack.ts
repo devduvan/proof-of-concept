@@ -59,7 +59,7 @@ export class SharedStack extends Stack {
         identitySource: ["$request.header.Authorization"],
         jwtConfiguration: {
           audience: [process.env.JWT_AUDIENCE],
-          issuer: process.env.JWT_ISSUER,
+          issuer: `${process.env.JWT_ISSUER}/`,
         },
       }
     );

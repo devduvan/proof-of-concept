@@ -13,8 +13,8 @@ custom:
     printOutput: true
   env:
     dev:
-      generalLayerDir: "/Users/devduvan/projects/personal/sinapsis/proof-of-concept/backend/layers/src/general"
-      layerDir: "./layer"
+      generalLayerDir: "/Users/devduvan/projects/personal/sinapsis/proof-of-concept/backend/layers/src/general/nodejs"
+      layerDir: "./layer/nodejs"
       layersPattern: "src/layer"
       INFRA_LOCALHOST_URL: http://localhost:4566
       API_BUCKET_NAME: ${self:custom.app.name}-images-${self:custom.stage}
