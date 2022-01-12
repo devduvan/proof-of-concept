@@ -60,6 +60,12 @@ test("Check that the necessary outputs exists", () => {
     },
   });
 
+  template.hasOutput("ThumbnailsTableName", {
+    Export: {
+      Name: Util.getResourceNameWithPrefix(`thumbnails-table-name-test`),
+    },
+  });
+
   template.hasOutput("ThumbnailsForGenerateQueueArn", {
     Export: {
       Name: Util.getResourceNameWithPrefix(
@@ -68,10 +74,10 @@ test("Check that the necessary outputs exists", () => {
     },
   });
 
-  template.hasOutput("ThumbnailGeneratedTopicArn", {
+  template.hasOutput("ThumbnailsGeneratedTopicArn", {
     Export: {
       Name: Util.getResourceNameWithPrefix(
-        `thumbnail-generated-topic-arn-test`
+        `thumbnails-generated-topic-arn-test`
       ),
     },
   });

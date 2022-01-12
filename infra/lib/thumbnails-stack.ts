@@ -133,6 +133,13 @@ export class ThumbnailsStack extends Stack {
       value: thumbnailsTable.tableArn,
     });
 
+    new CfnOutput(this, "ThumbnailsTableName", {
+      exportName: Util.getResourceNameWithPrefix(
+        `thumbnails-table-name-${props.env}`
+      ),
+      value: thumbnailsTable.tableName,
+    });
+
     new CfnOutput(this, "ThumbnailsForGenerateQueueArn", {
       exportName: Util.getResourceNameWithPrefix(
         `thumbnails-for-generate-queue-arn-${props.env}`
