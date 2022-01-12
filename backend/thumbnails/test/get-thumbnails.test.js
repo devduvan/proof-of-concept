@@ -45,3 +45,19 @@ test("Get thumbnails by image_id and size", async () => {
     expect(["120x120"]).toContain(thumbnail.size);
   }
 });
+
+test("Get thumbnails by size", async () => {
+  const image = await images.createImage();
+
+  await handler.handler(sqs.getEventFromImage(image));
+
+  const { body } = await api
+    .get(`/thumbnails`)
+    .query({ size: "120x120" })
+    .expect(200);
+
+  for (let index = 0; index < body.thumbnails.length; index++) {
+    const thumbnail = body.thumbnails[index];
+    expect(["120x120"]).toContain(thumbnail.size);
+  }
+});
