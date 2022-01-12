@@ -57,3 +57,21 @@ functions:
       patterns:
         - ${self:custom.env.${self:custom.stage}.layersPattern}
         - src/generate-thumbnails.js
+
+  getThumbnails:
+    name: ${self:custom.app.name}-get-thumbnails-${self:custom.stage}
+    description: Get thumbnails
+    events:
+      - httpApi:
+          method: GET
+          path: /thumbnails
+          authorizer:
+            id:
+              Fn::ImportValue: ${self:custom.app.name}-jwt-authorizer-id-${self:custom.stage}
+            scopes:
+              - thumbnails/read
+    handler: src/get-thumbnails.handler
+    package:
+      patterns:
+        - ${self:custom.env.${self:custom.stage}.layersPattern}
+        - src/get-thumbnails.js

@@ -1,6 +1,10 @@
+const supertest = require("supertest");
+
 const handler = require("../src/generate-thumbnails");
 const sqs = require("./mocks/sqs");
 const images = require("./mocks/images");
+
+const api = supertest(process.env.API_THUMBNAILS_URL);
 
 test("Get thumbnails", async () => {
   const { body } = await api.get(`/thumbnails`).expect(200);

@@ -51,7 +51,7 @@ const createThumbnailsFromImage = async (image) => {
       size: size.name,
     });
 
-    //if (thumbnailsResult.count > 0) continue;
+    if (thumbnailsResult.count > 0) continue;
 
     const file = await File.getFromCloud(image.path);
 
@@ -97,7 +97,7 @@ exports.handler = async (event) => {
     const record = event.Records[index];
 
     switch (record.eventSource) {
-      case "aws:sqs":
+      case "aws:sqs": {
         const image = JSON.parse(record.body).image;
         thumbnails = await createThumbnailsFromImage(image);
 
@@ -109,7 +109,7 @@ exports.handler = async (event) => {
           image: image,
           thumbnails: thumbnails,
         });
-        break;
+      }
     }
   }
 

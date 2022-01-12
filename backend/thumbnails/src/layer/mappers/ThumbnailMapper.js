@@ -50,31 +50,43 @@ class ThumbnailMapper {
       .promise();
   }
 
-  static async getByImage(image, { size }) {
+  static async getByIdUser(idUser, { idImage, size }) {
     let thumbnails = [];
     let count = 0;
 
     try {
-      let sk = `image#${image.id}#`;
+      let params = {
+        TableName: THUMBNAILS_TABLE_NAME,
+        KeyConditionExpression: `#idUser = :idUser`,
+        ExpressionAttributeNames: {
+          "#idUser": "idUser",
+        },
+        ExpressionAttributeValues: {
+          ":idUser": idUser,
+        },
+      };
 
-      if (size != null) {
-        sk += `size#${size}#`;
+      let sk = null;
+
+      if (idImage != null) {
+        sk += `image#${idImage}#`;
+
+        if (size != null) {
+          sk += `size#${size}#`;
+        }
+      } else if (size != null) {
+        params.FilterExpression = "#size = :size";
+        params.ExpressionAttributeNames["#size"] = "size";
+        params.ExpressionAttributeNames[":size"] = size;
       }
 
-      const data = await db
-        .query({
-          TableName: THUMBNAILS_TABLE_NAME,
-          KeyConditionExpression: `#idUser = :idUser AND begins_with(#sk, :sk)`,
-          ExpressionAttributeNames: {
-            "#idUser": "idUser",
-            "#sk": "sk",
-          },
-          ExpressionAttributeValues: {
-            ":idUser": image.idUser,
-            ":sk": sk,
-          },
-        })
-        .promise();
+      if (sk !== null) {
+        params.KeyConditionExpression += `AND begins_with(#sk, :sk)`;
+        params.ExpressionAttributeNames["#sk"] = "sk";
+        params.ExpressionAttributeNames[":sk"] = sk;
+      }
+
+      const data = await db.query(params).promise();
 
       if (data && data.Items) {
         count = data.Count;
@@ -87,7 +99,7 @@ class ThumbnailMapper {
       console.error(e);
     }
 
-    return { data: thumbnails, count: count };
+    return { thumbnails: thumbnails, count: count };
   }
 }
 
