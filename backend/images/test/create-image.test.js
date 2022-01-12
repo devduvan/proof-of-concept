@@ -1,6 +1,6 @@
 const supertest = require("supertest");
 
-const api = supertest(process.env.API_URL);
+const api = supertest(process.env.API_IMAGES_URL);
 
 test("Image is greater than 5MB", async () => {
   const { body } = await api
@@ -12,7 +12,7 @@ test("Image is greater than 5MB", async () => {
     IMAGES_1: {
       code: "IMAGES_1",
       message: "Image is greater than 5MB",
-    }
+    },
   });
 });
 
@@ -26,7 +26,7 @@ test("Image PNG not supported", async () => {
     IMAGES_2: {
       code: "IMAGES_2",
       message: "Image is not a valid JPEG image",
-    }
+    },
   });
 });
 
@@ -40,7 +40,7 @@ test("Image param is empty", async () => {
     IMAGES_3: {
       code: "IMAGES_3",
       message: "Image param is empty",
-    }
+    },
   });
 });
 
@@ -54,7 +54,7 @@ test("Image param not exists in the request", async () => {
     IMAGES_4: {
       code: "IMAGES_4",
       message: "Image param is required",
-    }
+    },
   });
 });
 

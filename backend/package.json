@@ -1,0 +1,19 @@
+{
+  "name": "thumbnail-generator-api-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "./main.sh -c start -e dev",
+    "deploy": "./main.sh -c deploy -e $npm_config_env",
+    "deployStack": "./main.sh -c deploy -e $npm_config_env -s $npm_config_stack",
+    "destroy": "./main.sh -c destroy -e $npm_config_env",
+    "destroyStack": "./main.sh -c destroy -e $npm_config_env -s $npm_config_stack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "serverless-offline-multi": "^1.2.0"
+  }
+}

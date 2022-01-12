@@ -46,10 +46,18 @@ class ThumbnailModel {
       : null;
   }
 
+  getUrl() {
+    return File.getSignedUrl(this.path, {
+      expires: 60000,
+    });
+  }
+
   toPublicJson() {
     return {
       id: this.id,
+      idImage: this.idImage,
       size: this.size,
+      url: this.getUrl(),
       createdAt: this.createdAtTz,
       updatedAt: this.updatedAtTz,
     };

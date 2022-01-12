@@ -14,7 +14,7 @@ const ApiGatewayResponse = require(`${process.env.GENERAL_LAYER_DIR}/responses/A
 const SUPPORTED_IMAGE_TYPES = ["image/jpeg"];
 
 const validateEvent = (event) => {
-  const contetType = event.headers["Content-Type"]
+  const contentType = event.headers["Content-Type"]
     ? event.headers["Content-Type"]
     : event.headers["content-type"];
 
@@ -22,11 +22,11 @@ const validateEvent = (event) => {
     ? event.headers["Content-Length"]
     : event.headers["content-length"];
 
-  if (!contetType) {
+  if (!contentType) {
     throw new ValidationException("INVALID_REQUEST");
   }
 
-  if (!contetType.includes("multipart/form-data")) {
+  if (!contentType.includes("multipart/form-data")) {
     throw new ValidationException("INVALID_REQUEST");
   }
 

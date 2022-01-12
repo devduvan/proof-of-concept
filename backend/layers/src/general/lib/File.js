@@ -40,6 +40,18 @@ class File {
       path: path,
     };
   }
+
+  static getSignedUrl(path, { expires }) {
+    let params = {
+      Key: path,
+    };
+
+    if (expires != null) {
+      params.Expires = expires;
+    }
+
+    return s3.getSignedUrl("getObject", params);
+  }
 }
 
 module.exports = File;
