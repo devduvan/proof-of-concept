@@ -30,6 +30,7 @@ export function getReadActionsDynamoPolicyStatement() {
     "dynamodb:Query",
     "dynamodb:DescribeTable",
     "dynamodb:Scan",
+    "dynamodb:GetItem",
   ];
 }
 

@@ -48,6 +48,8 @@ functions:
   generateThumbnails:
     name: ${self:custom.app.name}-generate-thumbnails-${self:custom.stage}
     description: Generate thumbnails after image has been created
+    architecture: x86_64
+    memorySize: 1536
     events:
       - sqs:
           arn:

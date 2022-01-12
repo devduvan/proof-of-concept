@@ -99,7 +99,7 @@ exports.handler = async (event) => {
 
     switch (record.eventSource) {
       case "aws:sqs": {
-        const image = JSON.parse(record.body).image;
+        const image = JSON.parse(JSON.parse(record.body).Message).image;
         thumbnails = await createThumbnailsFromImage(image);
 
         thumbnails = thumbnails.map((thumbnail) => {
