@@ -12,7 +12,9 @@ test("Thumbnails generated with success", async () => {
 
   for (let index = 0; index < response.thumbnails.length; index++) {
     const thumbnail = response.thumbnails[index];
+    expect(thumbnail.id).toBeDefined();
     expect(thumbnail.idImage).toBe(image.id);
     expect(["400x300", "160x120", "120x120"]).toContain(thumbnail.size);
+    expect(thumbnail.url).toBeDefined();
   }
 });
