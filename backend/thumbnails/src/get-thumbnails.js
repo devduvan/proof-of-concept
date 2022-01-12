@@ -15,12 +15,12 @@ exports.handler = async (event) => {
     let thumbnails = [];
 
     const queryResult = await ThumbnailMapper.getByIdUser(request.getIdUser(), {
-      idImage: request.getQueryParam("idImage", null),
+      idImage: request.getQueryParam("image_id", null),
       size: request.getQueryParam("size", null),
     });
 
-    if (queryResult) {
-      thumbnails = queryResult.data.map((thumbnail) => {
+    if (queryResult && queryResult.thumbnails) {
+      thumbnails = queryResult.thumbnails.map((thumbnail) => {
         return thumbnail.toPublicJson();
       });
     }

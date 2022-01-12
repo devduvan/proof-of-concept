@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "jest",
+    "start": "sls offline --port 3002",
     "deploy": "sls deploy --stage $npm_config_env"
   },
   "author": "",

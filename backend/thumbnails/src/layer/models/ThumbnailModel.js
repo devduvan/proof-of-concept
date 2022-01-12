@@ -16,16 +16,28 @@ class ThumbnailModel {
    * @param {string} props.id Thumbnail id
    * @param {string} props.size Thumbnail size
    * @param {string} props.path Thumbnail path on cloud
+   * @param {Buffer} props.content Thumbnail content
    * @param {string} props.createdAt CreatedAt image
    * @param {string} props.updatedAt UpdatedAt image
    */
-  constructor({ idUser, sk, idImage, id, size, path, createdAt, updatedAt }) {
+  constructor({
+    idUser,
+    sk,
+    idImage,
+    id,
+    size,
+    path,
+    content,
+    createdAt,
+    updatedAt,
+  }) {
     this.idUser = idUser;
     this.sk = sk;
     this.idImage = idImage;
     this.id = id;
     this.size = size;
     this.path = path;
+    this.content = content;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
   }

@@ -29,13 +29,14 @@ else
         fullCommand="sls remove --stage $env"
     ;;
     "test")
+        services=("images" "thumbnails")
         fullCommand="npm run test"
     ;;
     esac
 
     runIndividual="true"
 
-    for i in "${stacks[@]}"
+    for i in "${services[@]}"
     do
         if [ -z "$stack" ]
         then

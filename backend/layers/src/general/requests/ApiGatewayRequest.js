@@ -6,7 +6,7 @@ class ApiGatewayResponse {
   }
 
   getPathParam(name, defaultValue) {
-     let param = defaultValue;
+    let param = defaultValue;
 
     const pathParams = this.event.pathParameters;
 
@@ -16,6 +16,22 @@ class ApiGatewayResponse {
 
     if (typeof pathParams[name] !== "undefined") {
       param = pathParams[name];
+    }
+
+    return param;
+  }
+
+  getQueryParam(name, defaultValue) {
+    let param = defaultValue;
+
+    const queryParams = this.event.queryStringParameters;
+
+    if (!queryParams) {
+      return param;
+    }
+
+    if (typeof queryParams[name] !== "undefined") {
+      param = queryParams[name];
     }
 
     return param;

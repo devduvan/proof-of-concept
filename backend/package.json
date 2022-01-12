@@ -7,6 +7,7 @@
     "lint": "npx eslint .",
     "start": "./main.sh -c start -e dev",
     "deploy": "'npm run lint' && ./main.sh -c deploy -e $npm_config_env",
+    "test": "./main.sh -c test",
     "deployStack": "'npm run lint' && ./main.sh -c deploy -e $npm_config_env -s $npm_config_stack",
     "destroy": "./main.sh -c destroy -e $npm_config_env",
     "destroyStack": "./main.sh -c destroy -e $npm_config_env -s $npm_config_stack"

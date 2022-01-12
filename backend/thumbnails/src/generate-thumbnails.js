@@ -47,7 +47,8 @@ const createThumbnailsFromImage = async (image) => {
   for (let index = 0; index < THUMBNAIL_SIZES.length; index++) {
     const size = THUMBNAIL_SIZES[index];
 
-    const thumbnailsResult = await ThumbnailMapper.getByImage(image, {
+    const thumbnailsResult = await ThumbnailMapper.getByIdUser(image.idUser, {
+      idImage: image.id,
       size: size.name,
     });
 
@@ -64,7 +65,7 @@ const createThumbnailsFromImage = async (image) => {
 
     const imageName = image.name.substring(0, image.name.lastIndexOf("."));
     const imageType = image.name.substring(
-      image.name.lastIndexOf("."),
+      image.name.lastIndexOf(".") + 1,
       image.name.length
     );
 

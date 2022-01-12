@@ -69,7 +69,7 @@ class ThumbnailMapper {
       let sk = null;
 
       if (idImage != null) {
-        sk += `image#${idImage}#`;
+        sk = `image#${idImage}#`;
 
         if (size != null) {
           sk += `size#${size}#`;
@@ -77,13 +77,13 @@ class ThumbnailMapper {
       } else if (size != null) {
         params.FilterExpression = "#size = :size";
         params.ExpressionAttributeNames["#size"] = "size";
-        params.ExpressionAttributeNames[":size"] = size;
+        params.ExpressionAttributeValues[":size"] = size;
       }
 
       if (sk !== null) {
-        params.KeyConditionExpression += `AND begins_with(#sk, :sk)`;
+        params.KeyConditionExpression += ` AND begins_with(#sk, :sk)`;
         params.ExpressionAttributeNames["#sk"] = "sk";
-        params.ExpressionAttributeNames[":sk"] = sk;
+        params.ExpressionAttributeValues[":sk"] = sk;
       }
 
       const data = await db.query(params).promise();
