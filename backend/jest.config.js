@@ -1,6 +1,6 @@
 module.exports = {
   testEnvironment: "node",
-  roots: ["<rootDir>/integrationTests"],
+  roots: ["<rootDir>/tests"],
   testMatch: ["**/*.test.js"],
-  setupFiles: ["<rootDir>/integrationTests/setup.js"],
+  setupFiles: ["<rootDir>/tests/setup.js"],
 };
