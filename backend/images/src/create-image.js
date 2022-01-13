@@ -30,7 +30,7 @@ const validateEvent = (event) => {
     throw new ValidationException("INVALID_REQUEST");
   }
 
-  if (contentLength >= 5000000) {
+  if (contentLength >= 45000000) {
     throw new ValidationException("IMAGE_SIZE_NOT_SUPPORTED");
   }
 };

@@ -31,7 +31,7 @@ class ValidationException extends Error {
 
       case "IMAGE_SIZE_NOT_SUPPORTED":
         code = "IMAGES_1";
-        message = "Image is greater than 5MB";
+        message = "Image is greater than 4.5MB";
         break;
 
       case "IMAGE_TYPE_NOT_SUPPORTED":

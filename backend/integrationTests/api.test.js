@@ -18,7 +18,7 @@ test("Image is greater than 5MB", async () => {
   expect(body.errors).toStrictEqual({
     IMAGES_1: {
       code: "IMAGES_1",
-      message: "Image is greater than 5MB",
+      message: "Image is greater than 4.5MB",
     },
   });
 });
@@ -85,7 +85,7 @@ test("Image uploaded with success", async () => {
 });
 
 test("Get thumbnails", async () => {
-  const { imageCreatedBody } = await api
+  const { body: imageCreatedBody } = await api
     .post("/images")
     .set("Authorization", `Bearer ${process.env.API_TOKEN}`)
     .attach("image", `${__dirname}/images/200.jpeg`)
@@ -103,6 +103,7 @@ test("Get thumbnails", async () => {
 
   for (let index = 0; index < body.thumbnails.length; index++) {
     const thumbnail = body.thumbnails[index];
+    expect(thumbnail.idImage).toBe(imageCreatedBody.image.id);
     expect(["400x300", "160x120", "120x120"]).toContain(thumbnail.size);
   }
 });

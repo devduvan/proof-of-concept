@@ -1,11 +1,7 @@
 import { CfnOutput, Duration, RemovalPolicy, Stack } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
-import {
-  aws_s3 as s3,
-  aws_apigateway as apigateway,
-  aws_apigatewayv2 as apigatewayv2,
-} from "aws-cdk-lib";
+import { aws_s3 as s3, aws_apigatewayv2 as apigatewayv2 } from "aws-cdk-lib";
 
 import * as Util from "../util";
 import { CustomStackProps } from "../interfaces";

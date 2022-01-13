@@ -9,15 +9,23 @@ class FormData {
    * @param {object} event Lambda event
    */
   static async getFiles(event) {
-    const result = await parser.parse(event);
-    return result.files.map((file) => {
-      return {
-        field: file.fieldname,
-        fileName: file.filename,
-        content: file.content,
-        type: file.contentType,
-      };
-    });
+    let files = [];
+
+    try {
+      const result = await parser.parse(event);
+      files = result.files.map((file) => {
+        return {
+          field: file.fieldname,
+          fileName: file.filename,
+          content: file.content,
+          type: file.contentType,
+        };
+      });
+    } catch (e) {
+      console.error(e);
+    }
+
+    return files;
   }
 }
 
