@@ -54,7 +54,7 @@ else
         then
             cd "$i"
 
-            if [ "$i" == "layers" ]
+            if [ "$i" == "layers" ] && [ $command == "deploy" ]
             then
                 cd src/general/nodejs/
                 echo "Installing sharp in layer for lambda\n"
@@ -66,7 +66,7 @@ else
             eval $fullCommand
             echo "Executing finished \n Command: $fullCommand \n Stack: $i \n Env: $env \n\n"
 
-            if [ "$i" == "layers" ]
+            if [ "$i" == "layers" ] && [ $command == "deploy" ]
             then
                 cd src/general/nodejs/
                 echo "Reinstalling sharp in layer for local environment\n"
