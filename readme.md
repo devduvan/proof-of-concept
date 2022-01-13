@@ -8,8 +8,8 @@ Thumbnails generated:
 - 160x120
 - 120x120
 
-**Testing URL:** https://k4xy6grwpb.execute-api.us-east-1.amazonaws.com
-**Documentation:** https://app.swaggerhub.com/apis-docs/devduvan/generate-thumbnails_api/1
+- **Testing URL:** https://k4xy6grwpb.execute-api.us-east-1.amazonaws.com
+- **Documentation:** https://app.swaggerhub.com/apis-docs/devduvan/generate-thumbnails_api/1
 
 # Table of contents
 
@@ -98,7 +98,7 @@ npm i
 #### Notes
 
 - If you copy the .env.example file, don't forget remove the comments.
-- If you're going to use an aws account for dev, you should configure the AWS_ACCOUNT_ID and AWS_REGION_ID vars, but if you're going to use localstack it's not necessary.
+- If you're going to use an aws account for dev, you should configure the AWS_ACCOUNT_ID and AWS_REGION_ID vars in .env.dev, but if you're going to use localstack it's not necessary.
 
 #### Tests
 
@@ -116,7 +116,7 @@ Execute this command for configure an specific environment. **(only is necessary
 npm run config --env=test
 ```
 
-_For bootstrap the local environment is not necessary pass the flag --env_
+_For bootstrap the local environment is not necessary pass the argument --env_
 
 #### Deploy environments
 
@@ -126,8 +126,8 @@ Execute this command for deploy to an specific environment.
 npm run deploy --env=test
 ```
 
-- _For deploy the local environment is not necessary pass the flag --env_
-- When we deploy our local environment, it's possible that the shared stack fail, because we are using API Gateway HTTP v2 that is a paid service of localstack. So we can ignore this error but don't worry, the other resources are created with success and for simulate the API in local environment we going to use sls offline.\_
+- _For deploy the local environment is not necessary pass the argument --env_
+- _When we deploy our local environment, it's possible that the shared stack fail, because we are using API Gateway HTTP v2 that is a paid service of localstack. So we can ignore this error but don't worry, the other resources are created with success and for simulate the API in local environment we going to use sls offline._
 - _For your first deploy, make sure that you already bootstrap the environment_
 
 ## Backend
@@ -148,38 +148,40 @@ npm run installAll
 
 3. Configure your .env file from .env.example
 4. Start service
-   4.1 Automatic form:
+   - **Automatic method**:
    ```sh
    npm run start
    ```
-   4.2 Manual form: If you have problems with serverless-offline-multi for start service of automatic form, you can use this form:
-   - Open a new terminal
-   - Go to /backend/images folder
-   - Run the next command
-   ```sh
-       npm run start
-   ```
-   - Open a new terminal
-   - Go to /backend/thumbnails folder
-   - Run the next command
-   ```sh
-      npm run start
-   ```
+   - **Manual method**: If you have problems with serverless-offline-multi for start service of automatic method, you can use this method:
+     - Open a new terminal
+     - Go to /backend/images folder
+     - Run the next command
+     ```sh
+         npm run start
+     ```
+     - Open a new terminal
+     - Go to /backend/thumbnails folder
+     - Run the next command
+     ```sh
+         npm run start
+     ```
 
 #### Notes
 
 - If you copy the .env.example file, don't forget remove the comments.
-- By Default the images service run on port 3001 and the thumbnails service run on 3002, you can change this on main.sh, but remember update the envs in /tests/.env
+- By Default the images service run on port 3001 and the thumbnails service run on 3002, you can change this on main.sh, but remember update the envs in your.env file
 
 #### Local Tests
 
-Execute tests of infrastructure. From /backend, execute the next command for run the tests locally
+Execute tests of backend.
+
+In /backend, execute the next command for run the tests locally
 
 ```sh
 npm run test
 ```
 
-_For execute tests it's necessary that the services are started_
+_For execute tests it's necessary that the services are started and infra is deployed on local_
 
 #### Deploy environments
 
@@ -188,9 +190,6 @@ Execute this command for deploy to an specific environment.
 ```sh
 npm run deploy --env=test
 ```
-
-- _For deploy the local environment is not necessary pass the flag --env_
-- _Cuando despleguemos en nuestro entorno local, es posible que el stack de api falle, debido a que es un servicio pago de aws por ser HTTP API v2, sin embargo la API no la vamos a usar en local debido a que vamos a usar sls offline, asi que podemos ignorar el despliegue de ese stack_
 
 #### Integrations Tests in test environment
 
