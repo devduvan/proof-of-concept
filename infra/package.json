@@ -9,12 +9,12 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "config": "./main.sh -c config -e $npm_config_env",
+    "config": "sh main.sh -c config -e $npm_config_env",
     "start": "docker-compose up -d && tsc -w",
-    "deploy": "./main.sh -c deploy -e $npm_config_env",
-    "deployStack": "./main.sh -c deployStack -e $npm_config_env -s $npm_config_stack",
-    "destroy": "./main.sh -c destroy -e $npm_config_env",
-    "destroyStack": "./main.sh -c destroyStack -e $npm_config_env -s $npm_config_stack"
+    "deploy": "sh main.sh -c deploy -e $npm_config_env",
+    "deployStack": "sh main.sh -c deployStack -e $npm_config_env -s $npm_config_stack",
+    "destroy": "sh main.sh -c destroy -e $npm_config_env",
+    "destroyStack": "sh main.sh -c destroyStack -e $npm_config_env -s $npm_config_stack"
   },
   "devDependencies": {
     "aws-cdk": "2.3.0",
