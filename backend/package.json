@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "npx eslint .",
-    "installAll": "sh main.sh -c install -e dev",
+    "installAll": "npm install && sh main.sh -c install -e dev",
     "start": "sh main.sh -c start -e dev",
     "deploy": "npm run lint && sh main.sh -c deploy -e $npm_config_env && npm run testApi",
     "testApi": "jest",
