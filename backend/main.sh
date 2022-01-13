@@ -53,9 +53,27 @@ else
         if [[ "$runIndividual" == "true" ]]
         then
             cd "$i"
+
+            if [ "$i" == "layers" ]
+            then
+                cd src/general/nodejs/
+                echo -e "Installing sharp in layer for lambda\n"
+                npm install --platform=linux --arch=x64 sharp --save
+                cd ../../..
+            fi
+
             echo -e "Executing started \n Command: $fullCommand \n Stack: $i \n Env: $env \n\n"
             eval $fullCommand
             echo -e "Executing finished \n Command: $fullCommand \n Stack: $i \n Env: $env \n\n"
+
+            if [ "$i" == "layers" ]
+            then
+                cd src/general/nodejs/
+                echo -e "Reinstalling sharp in layer for local environment\n"
+                npm install sharp --save
+                cd ../../..
+            fi
+
             cd ..
         fi
     done

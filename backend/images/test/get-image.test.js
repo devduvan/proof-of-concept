@@ -16,5 +16,8 @@ test("Image retrieved with success", async () => {
 
   const { body } = await api.get(`/images/${imageCreated.id}`).expect(200);
 
+  delete imageCreated.url;
+  delete body.image.url;
+
   expect(imageCreated).toStrictEqual(body.image);
 });

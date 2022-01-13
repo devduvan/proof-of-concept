@@ -11,7 +11,7 @@ test("Image is greater than 5MB", async () => {
   expect(body.errors).toStrictEqual({
     IMAGES_1: {
       code: "IMAGES_1",
-      message: "Image is greater than 5MB",
+      message: "Image is greater than 4.5MB",
     },
   });
 });

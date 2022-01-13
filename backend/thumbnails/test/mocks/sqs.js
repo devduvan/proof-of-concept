@@ -6,11 +6,13 @@ exports.getEventFromImage = (image) => {
       {
         eventSource: "aws:sqs",
         body: JSON.stringify({
-          image: {
-            idUser: "dev-user",
-            ...image,
-            path: `users/dev-user/images/${image.id}/${image.name}`,
-          },
+          Message: JSON.stringify({
+            image: {
+              idUser: "dev-user",
+              ...image,
+              path: `users/dev-user/images/${image.id}/${image.name}`,
+            },
+          }),
         }),
       },
     ],
