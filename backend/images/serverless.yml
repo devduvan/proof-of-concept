@@ -10,6 +10,7 @@ package:
 plugins:
   - serverless-offline
   - serverless-latest-layer-version
+  - serverless-dotenv-plugin
 
 provider:
   name: aws

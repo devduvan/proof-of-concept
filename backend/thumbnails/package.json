@@ -16,6 +16,7 @@
   "devDependencies": {
     "dotenv": "^10.0.0",
     "jest": "^27.4.7",
+    "serverless-dotenv-plugin": "^3.12.2",
     "serverless-latest-layer-version": "^2.1.1",
     "serverless-offline": "^8.3.1",
     "supertest": "^6.2.1"
