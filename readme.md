@@ -8,8 +8,9 @@ Thumbnails generated:
 - 160x120
 - 120x120
 
-- **Testing URL:** https://k4xy6grwpb.execute-api.us-east-1.amazonaws.com
-- **Documentation:** https://app.swaggerhub.com/apis-docs/devduvan/generate-thumbnails_api/1
+**Testing URL:** https://k4xy6grwpb.execute-api.us-east-1.amazonaws.com
+
+**Documentation:** https://app.swaggerhub.com/apis-docs/devduvan/generate-thumbnails_api/1
 
 # Table of contents
 
