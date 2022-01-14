@@ -36,17 +36,22 @@ const sharedProps = {
   region: region,
 };
 
-new SharedStack(app, `shared-${env}`, {
+const sharedStack = new SharedStack(app, `shared-${env}`, {
   ...sharedProps,
   name: Util.getStackNameWithPrefix(`shared-${env}`),
 });
 
-new ImagesStack(app, `images-${env}`, {
+const imagesStack = new ImagesStack(app, `images-${env}`, {
   ...sharedProps,
   name: Util.getStackNameWithPrefix(`images-${env}`),
 });
 
-new ThumbnailsStack(app, `thumbnails-${env}`, {
+imagesStack.addDependency(sharedStack);
+
+const thumbnailsStack = new ThumbnailsStack(app, `thumbnails-${env}`, {
   ...sharedProps,
   name: Util.getStackNameWithPrefix(`thumbnails-${env}`),
 });
+
+thumbnailsStack.addDependency(imagesStack);
+thumbnailsStack.addDependency(sharedStack);

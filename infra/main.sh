@@ -27,19 +27,12 @@ case $command in
   ;;
 
   "deploy")
-    for i in "${stacks[@]}"
-    do
       if  [[ "$env" == "dev" ]]
       then
-        fullCommand="cdklocal deploy $i-$env -c env=$env --require-approval never"
+        fullCommand="cdklocal deploy --all -c env=$env --require-approval never"
       else
-        fullCommand="cdk deploy $i-$env --profile sinapsis-$env -c env=$env"
+        fullCommand="cdk deploy --all --profile sinapsis-$env -c env=$env"
       fi
-
-        echo "Executing started \n Command: $fullCommand \n Stack: $i \n Env: $env \n\n"
-        eval "$fullCommand"
-        echo "Executing finished \n Command: $fullCommand \n Stack: $i \n Env: $env \n\n"
-    done
   ;;
 
   "deployStack")
