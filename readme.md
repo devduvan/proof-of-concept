@@ -131,6 +131,14 @@ npm run deploy --env=test
 - _When we deploy our local environment, it's possible that the shared stack fail, because we are using API Gateway HTTP v2 that is a paid service of localstack. So we can ignore this error but don't worry, the other resources are created with success and for simulate the API in local environment we going to use sls offline._
 - _For your first deploy, make sure that you already bootstrap the environment_
 
+#### Destroy environments
+
+For destroy all infrastructure resources in a specific enviroment, you can use the next command.
+
+```sh
+npm run destroy --env=test
+```
+
 ## Backend
 
 #### Configuration
@@ -201,3 +209,11 @@ npm run testApi
 ```
 
 _testApi always is executed after deploy_
+
+#### Destroy environments
+
+For destroy all resources of backend in a specific enviroment, you can use the next command.
+
+```sh
+npm run destroy --env=test
+```
