@@ -10,8 +10,13 @@ export class SharedStack extends Stack {
   constructor(scope: Construct, id: string, props: CustomStackProps) {
     super(scope, id, Util.getCdkPropsFromCustomProps(props));
 
+    if (!process.env.BUCKET_NAME_SUFIX)
+      throw new Error("BUCKET_NAME_SUFIX is not defined in your env");
+
     const imagesBucket = new s3.Bucket(this, "ImagesBucket", {
-      bucketName: Util.getResourceNameWithPrefix(`images-${props.env}`),
+      bucketName: Util.getResourceNameWithPrefix(
+        `${process.env.BUCKET_NAME_SUFIX}-${props.env}`
+      ),
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
 

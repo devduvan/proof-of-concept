@@ -16,7 +16,9 @@ test("Check that bucket, api, stage and authorizer exists", () => {
   const template = Template.fromStack(stack);
 
   template.hasResourceProperties("AWS::S3::Bucket", {
-    BucketName: Util.getResourceNameWithPrefix(`images-test`),
+    BucketName: Util.getResourceNameWithPrefix(
+      `${process.env.BUCKET_NAME_SUFIX}-test`
+    ),
   });
 
   template.hasResourceProperties("AWS::ApiGatewayV2::Api", {
