@@ -2,6 +2,9 @@ service: ${self:custom.app.name}-backend-layers
 
 projectDir: "../"
 
+plugins:
+  - serverless-dotenv-plugin
+
 custom: ${file(../serverless.common.yml):custom}
 
 provider:

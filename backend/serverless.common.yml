@@ -13,6 +13,18 @@ custom:
     printOutput: true
   dotenv:
     path: ../.env
+    exclude:
+      - GENERAL_LAYER_DIR
+      - API_IMAGES_URL
+      - API_THUMBNAILS_URL
+      - INFRA_LOCALHOST_URL
+      - API_URL_TEST
+      - BUCKET_NAME_SUFIX
+      - AUTH_URL
+      - AUTH_CLIENT_ID
+      - AUTH_CLIENT_SECRET
+      - AUTH_USERNAME_FOR_TEST
+      - AUTH_PASSWORD_FOR_TEST
   env:
     dev:
       generalLayerDir: ${env:GENERAL_LAYER_DIR}

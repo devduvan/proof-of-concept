@@ -8,10 +8,32 @@ const sleep = (ms) => {
   });
 };
 
+var authToken = null;
+
+const getAuthToken = async () => {
+  if (!authToken) {
+    const authApi = supertest(process.env.AUTH_URL);
+
+    const { body } = await authApi.post("/token").send({
+      client_id: process.env.AUTH_CLIENT_ID,
+      client_secret: process.env.AUTH_CLIENT_SECRET,
+      username: process.env.AUTH_USERNAME_FOR_TEST,
+      password: process.env.AUTH_PASSWORD_FOR_TEST,
+      grant_type: "password",
+    });
+
+    authToken = body.access_token;
+  }
+
+  return authToken;
+};
+
 test("Image is greater than 5MB", async () => {
+  const apiToken = await getAuthToken();
+
   const { body } = await api
     .post("/images")
-    .set("Authorization", `Bearer ${process.env.API_TOKEN_TEST}`)
+    .set("Authorization", `Bearer ${apiToken}`)
     .attach("image", `${__dirname}/images/400-by-size.jpg`)
     .expect(400);
 
@@ -24,9 +46,11 @@ test("Image is greater than 5MB", async () => {
 });
 
 test("Image PNG not supported", async () => {
+  const apiToken = await getAuthToken();
+
   const { body } = await api
     .post("/images")
-    .set("Authorization", `Bearer ${process.env.API_TOKEN_TEST}`)
+    .set("Authorization", `Bearer ${apiToken}`)
     .attach("image", `${__dirname}/images/400-by-type.png`)
     .expect(400);
 
@@ -39,9 +63,10 @@ test("Image PNG not supported", async () => {
 });
 
 test("Image param is empty", async () => {
+  const apiToken = await getAuthToken();
   const { body } = await api
     .post("/images")
-    .set("Authorization", `Bearer ${process.env.API_TOKEN_TEST}`)
+    .set("Authorization", `Bearer ${apiToken}`)
     .attach("image", `${__dirname}/images/empty.jpeg`)
     .expect(400);
 
@@ -54,9 +79,10 @@ test("Image param is empty", async () => {
 });
 
 test("Image param not exists in the request", async () => {
+  const apiToken = await getAuthToken();
   const { body } = await api
     .post("/images")
-    .set("Authorization", `Bearer ${process.env.API_TOKEN_TEST}`)
+    .set("Authorization", `Bearer ${apiToken}`)
     .attach("noImage", `${__dirname}/images/200.jpeg`)
     .expect(400);
 
@@ -69,9 +95,10 @@ test("Image param not exists in the request", async () => {
 });
 
 test("Image uploaded with success", async () => {
+  const apiToken = await getAuthToken();
   const { body } = await api
     .post("/images")
-    .set("Authorization", `Bearer ${process.env.API_TOKEN_TEST}`)
+    .set("Authorization", `Bearer ${apiToken}`)
     .attach("image", `${__dirname}/images/200.jpeg`)
     .expect(201);
 
@@ -85,9 +112,10 @@ test("Image uploaded with success", async () => {
 });
 
 test("Get thumbnails", async () => {
+  const apiToken = await getAuthToken();
   const { body: imageCreatedBody } = await api
     .post("/images")
-    .set("Authorization", `Bearer ${process.env.API_TOKEN_TEST}`)
+    .set("Authorization", `Bearer ${apiToken}`)
     .attach("image", `${__dirname}/images/200.jpeg`)
     .expect(201);
 
@@ -95,7 +123,7 @@ test("Get thumbnails", async () => {
 
   const { body } = await api
     .get("/thumbnails")
-    .set("Authorization", `Bearer ${process.env.API_TOKEN_TEST}`)
+    .set("Authorization", `Bearer ${apiToken}`)
     .query({ image_id: imageCreatedBody.image.id })
     .expect(200);
 
